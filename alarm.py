@@ -7,29 +7,36 @@ import os
 
 def set_alarm(alarm_time):
   print(f"Alarm set for {alarm_time}")
-  sound_file = "my_musi1c.mp3"
+  sound_file = "my_music.mp3"
   
   if not os.path.exists(sound_file):
     print(f"Error: Sound file '{sound_file}' not found.")
     return
   
-  while True:
-    current_time = datetime.datetime.now().strftime("%H:%M:%S")
-    print(current_time)
-    
-    if current_time == alarm_time:
-      print("🔔 WAKE UP! ⏰")
+  pygame.mixer.init()
+  
+  try:
+    while True:
+      current_time = datetime.datetime.now().strftime("%H:%M:%S")
+      print(current_time)
       
-      pygame.mixer.init()
-      pygame.mixer.music.load(sound_file)
-      pygame.mixer.music.play()
+      if current_time == alarm_time:
+        print("🔔 WAKE UP! ⏰")
+        
+        pygame.mixer.init()
+        pygame.mixer.music.load(sound_file)
+        pygame.mixer.music.play()
+        
+        while pygame.mixer.music.get_busy():
+          time.sleep(1)
+        
+        break
       
-      while pygame.mixer.music.get_busy():
-        time.sleep(1)
-      
-      break
-    
-    time.sleep(1)
+      time.sleep(1)
+  except KeyboardInterrupt:
+    print("You stopped the alarm 😃. You are awake!")
+  finally:
+    pygame.mixer.quit()
     
 def validate_time_input(user_input):
   try:
