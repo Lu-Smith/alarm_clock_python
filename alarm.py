@@ -7,9 +7,8 @@ import pygame
 def set_alarm(alarm_time):
   print(f"Alarm set for {alarm_time}")
   sound_file = "my_music.mp3"
-  is_running = True
   
-  while is_running:
+  while True:
     current_time = datetime.datetime.now().strftime("%H:%M:%S")
     print(current_time)
     
@@ -23,11 +22,28 @@ def set_alarm(alarm_time):
       while pygame.mixer.music.get_busy():
         time.sleep(1)
       
-      is_running = False
+      break
     
     time.sleep(1)
+    
+def validate_time_input(user_input):
+  try:
+    if len(user_input) == 5:  
+      datetime.datetime.strptime(user_input, "%H:%M")
+      return user_input + ":00"
+    elif len(user_input) == 8:
+      datetime.datetime.strptime(user_input, "%H:%M:%S")
+      return user_input
+    else:
+      raise ValueError
+  except ValueError:
+    print("Invalid time format. Please enter the alarm time (HH:MM or HH:MM:SS).")
 
 if __name__ == "__main__":
-  alarm_time = input("Enter the alarm time (HH:MM:SS): ")
-  set_alarm(alarm_time)
+  while True:
+        alarm_time = input("Enter the alarm time (HH:MM or HH:MM:SS): ")
+        alarm_time = validate_time_input(alarm_time)
+        if alarm_time:
+            set_alarm(alarm_time)
+            break
 
