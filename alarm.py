@@ -3,10 +3,15 @@
 import time
 import datetime
 import pygame
+import os
 
 def set_alarm(alarm_time):
   print(f"Alarm set for {alarm_time}")
-  sound_file = "my_music.mp3"
+  sound_file = "my_musi1c.mp3"
+  
+  if not os.path.exists(sound_file):
+    print(f"Error: Sound file '{sound_file}' not found.")
+    return
   
   while True:
     current_time = datetime.datetime.now().strftime("%H:%M:%S")
@@ -41,9 +46,9 @@ def validate_time_input(user_input):
 
 if __name__ == "__main__":
   while True:
-        alarm_time = input("Enter the alarm time (HH:MM or HH:MM:SS): ")
-        alarm_time = validate_time_input(alarm_time)
-        if alarm_time:
-            set_alarm(alarm_time)
-            break
+    alarm_time = input("Enter the alarm time (HH:MM or HH:MM:SS): ")
+    alarm_time = validate_time_input(alarm_time)
+    if alarm_time:
+      set_alarm(alarm_time)
+      break
 
